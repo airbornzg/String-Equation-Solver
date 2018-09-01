@@ -139,8 +139,6 @@ namespace assignment1_ver3
                         Console.WriteLine("Result x = {0}", x);
                         Console.ReadKey();
                     }
-
-
                 }
                 else
                 {
