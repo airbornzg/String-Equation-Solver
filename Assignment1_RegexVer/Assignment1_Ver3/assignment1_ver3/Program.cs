@@ -109,10 +109,16 @@ namespace assignment1_ver3
                     double cRightD = solver.FindDivisionCoeff(strRight, regexCD);
 
                     //bx+c = 0 general root solver formula
-                    b = bLeft - bRight;
-                    c = (cLeft + cLeftM + cLeftD) - (cRight + cRightM + cRightD);
-                    x = -(c / b);
-
+                    if (b == 0)
+                    {
+                        throw new DivideByZeroException();
+                    }
+                    else
+                    {
+                        b = bLeft - bRight;
+                        c = (cLeft + cLeftM + cLeftD) - (cRight + cRightM + cRightD);
+                        x = -(c / b);
+                    }
                     //Print out the result
                     //Console.WriteLine("Coefficient a = {0}", a);
                     Console.WriteLine("Coefficient b = {0}", b);
@@ -124,6 +130,10 @@ namespace assignment1_ver3
                 {
                     throw new Exception("Please input correct equation format!");
                 }
+            }
+            catch (DivideByZeroException e)
+            {
+                Console.WriteLine("The Error is '{0}'", e);
             }
             catch (Exception e)
             {
