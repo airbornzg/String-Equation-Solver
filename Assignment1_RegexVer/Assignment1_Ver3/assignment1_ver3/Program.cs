@@ -70,15 +70,23 @@ namespace assignment1_ver3
             //Variable declaration
             string strLeft, strRight;
             double x = 0, b = 0, c = 0;
-
+            string equ;
             //Exception Handling
             try
             {
                 if (args[0] == "calc")
                 {
-                    Console.WriteLine("Input Equation is {0}", args[1]);
-                    string equ = args[1];
-
+                    if (args.Length > 2)
+                    {
+                        equ = string.Join("", args);
+                        equ = equ.Replace("calc", "");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Input Equation is {0}", args[1]);
+                        equ = args[1];
+                    }
+                    Console.WriteLine("The equation is: {0}", equ);
                     //Divide the equation into 2 respect to the equal sign
                     string[] equDivided = equ.Split('=');
                     strLeft = equDivided[0];
@@ -108,23 +116,31 @@ namespace assignment1_ver3
                     double cRightM = solver.FindMultiCoeff(strRight, regexCM);
                     double cRightD = solver.FindDivisionCoeff(strRight, regexCD);
 
-                    //bx+c = 0 general root solver formula
+                    //Final coefficient
+                    b = bLeft - bRight;
+                    c = (cLeft + cLeftM + cLeftD) - (cRight + cRightM + cRightD);
+
+                    //DivideByZeroException
                     if (b == 0)
                     {
                         throw new DivideByZeroException();
                     }
                     else
                     {
-                        b = bLeft - bRight;
-                        c = (cLeft + cLeftM + cLeftD) - (cRight + cRightM + cRightD);
+                        //bx+c = 0 general root solver formula
                         x = -(c / b);
+
+                        //Print out the coefficient
+                        //Console.WriteLine("Coefficient a = {0}", a);
+                        //Console.WriteLine("Coefficient b = {0}", b);
+                        //Console.WriteLine("Coefficient c = {0}", c);
+
+                        //Print out the result
+                        Console.WriteLine("Result x = {0}", x);
+                        Console.ReadKey();
                     }
-                    //Print out the result
-                    //Console.WriteLine("Coefficient a = {0}", a);
-                    Console.WriteLine("Coefficient b = {0}", b);
-                    Console.WriteLine("Coefficient c = {0}", c);
-                    Console.WriteLine("Result x = {0}", x);
-                    Console.ReadKey();
+
+
                 }
                 else
                 {
@@ -134,10 +150,12 @@ namespace assignment1_ver3
             catch (DivideByZeroException e)
             {
                 Console.WriteLine("The Error is '{0}'", e);
+                Console.ReadKey();
             }
             catch (Exception e)
             {
                 Console.WriteLine("The Error is '{0}'", e);
+                Console.ReadKey();
             }
             finally
             {
