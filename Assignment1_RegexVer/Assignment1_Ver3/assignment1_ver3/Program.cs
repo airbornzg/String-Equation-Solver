@@ -71,55 +71,67 @@ namespace assignment1_ver3
             string strLeft, strRight;
             double x = 0, b = 0, c = 0;
 
-            if (args[0] == "calc")
+            //Exception Handling
+            try
             {
-                Console.WriteLine("Input Equation is {0}", args[1]);
-                string equ = args[1];
+                if (args[0] == "calc")
+                {
+                    Console.WriteLine("Input Equation is {0}", args[1]);
+                    string equ = args[1];
 
-                //Divide the equation into 2 respect to the equal sign
-                string[] equDivided = equ.Split('=');
-                strLeft = equDivided[0];
-                strRight = equDivided[1];
+                    //Divide the equation into 2 respect to the equal sign
+                    string[] equDivided = equ.Split('=');
+                    strLeft = equDivided[0];
+                    strRight = equDivided[1];
 
-                //The regular expression pattern to find the coefficinet
-                //string regexA = "([+-][0-9]*)x\\^2";
-                string regexB = "([+-][0-9]*)[*]*x(?!\\^)";
-                string regexC = "([+-][0-9]+)(?!x)(?![*])(?![/])(?![0-9]*[*x])";
-                string regexCM = "([+-]*[0-9]+)([*]+)([+-]*[0-9]+)";
-                string regexCD = "([+-]*[0-9]+)([/]+)([+-]*[0-9]+)";
+                    //The regular expression pattern to find the coefficinet
+                    //string regexA = "([+-][0-9]*)x\\^2";
+                    string regexB = "([+-][0-9]*)[*]*x(?!\\^)";
+                    string regexC = "([+-][0-9]+)(?!x)(?![*])(?![/])(?![0-9]*[*x])";
+                    string regexCM = "([+-]*[0-9]+)([*]+)([+-]*[0-9]+)";
+                    string regexCD = "([+-]*[0-9]+)([/]+)([+-]*[0-9]+)";
 
-                Solver solver = new Solver();
+                    Solver solver = new Solver();
 
-                //Left equation
-                //double a1 = solver.FindAddMinusCoeff(regexA);
-                double bLeft = solver.FindAddMinusCoeff(strLeft, regexB);
-                double cLeft = solver.FindAddMinusCoeff(strLeft, regexC);
+                    //Left equation
+                    //double a1 = solver.FindAddMinusCoeff(regexA);
+                    double bLeft = solver.FindAddMinusCoeff(strLeft, regexB);
+                    double cLeft = solver.FindAddMinusCoeff(strLeft, regexC);
 
-                double cLeftM = solver.FindMultiCoeff(strLeft, regexCM);
-                double cLeftD = solver.FindDivisionCoeff(strLeft, regexCD);
+                    double cLeftM = solver.FindMultiCoeff(strLeft, regexCM);
+                    double cLeftD = solver.FindDivisionCoeff(strLeft, regexCD);
 
-                //Right equation
-                double bRight = solver.FindAddMinusCoeff(strRight, regexB);
-                double cRight = solver.FindAddMinusCoeff(strRight, regexC);
+                    //Right equation
+                    double bRight = solver.FindAddMinusCoeff(strRight, regexB);
+                    double cRight = solver.FindAddMinusCoeff(strRight, regexC);
 
-                double cRightM = solver.FindMultiCoeff(strRight, regexCM);
-                double cRightD = solver.FindDivisionCoeff(strRight, regexCD);
+                    double cRightM = solver.FindMultiCoeff(strRight, regexCM);
+                    double cRightD = solver.FindDivisionCoeff(strRight, regexCD);
 
-                //bx+c = 0 general root solver formula
-                b = bLeft - bRight;
-                c = (cLeft + cLeftM + cLeftD) - (cRight + cRightM + cRightD);
-                x = -(c / b);
+                    //bx+c = 0 general root solver formula
+                    b = bLeft - bRight;
+                    c = (cLeft + cLeftM + cLeftD) - (cRight + cRightM + cRightD);
+                    x = -(c / b);
 
-                //Print out the result
-                //Console.WriteLine("Coefficient a = {0}", a);
-                Console.WriteLine("Coefficient b = {0}", b);
-                Console.WriteLine("Coefficient c = {0}", c);
-                Console.WriteLine("Result x = {0}", x);
-                Console.ReadKey();
+                    //Print out the result
+                    //Console.WriteLine("Coefficient a = {0}", a);
+                    Console.WriteLine("Coefficient b = {0}", b);
+                    Console.WriteLine("Coefficient c = {0}", c);
+                    Console.WriteLine("Result x = {0}", x);
+                    Console.ReadKey();
+                }
+                else
+                {
+                    throw new Exception("Please input correct equation format!");
+                }
             }
-            else
+            catch (Exception e)
             {
-                Console.WriteLine("Please input correct equation format!");
+                Console.WriteLine("The Error is '{0}'", e);
+            }
+            finally
+            {
+                Console.WriteLine("Please close the window!");
             }
         }
     }
