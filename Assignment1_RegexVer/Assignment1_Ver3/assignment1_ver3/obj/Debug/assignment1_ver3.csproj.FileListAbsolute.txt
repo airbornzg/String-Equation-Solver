@@ -1,0 +1,7 @@
+C:\Users\Zuguang Chen\OneDrive\Study\UTS\C# Application Development\assignment 1\assignment1_ver3\assignment1_ver3\bin\Debug\assignment1_ver3.exe.config
+C:\Users\Zuguang Chen\OneDrive\Study\UTS\C# Application Development\assignment 1\assignment1_ver3\assignment1_ver3\bin\Debug\assignment1_ver3.exe
+C:\Users\Zuguang Chen\OneDrive\Study\UTS\C# Application Development\assignment 1\assignment1_ver3\assignment1_ver3\bin\Debug\assignment1_ver3.pdb
+C:\Users\Zuguang Chen\OneDrive\Study\UTS\C# Application Development\assignment 1\assignment1_ver3\assignment1_ver3\obj\Debug\assignment1_ver3.csprojAssemblyReference.cache
+C:\Users\Zuguang Chen\OneDrive\Study\UTS\C# Application Development\assignment 1\assignment1_ver3\assignment1_ver3\obj\Debug\assignment1_ver3.csproj.CoreCompileInputs.cache
+C:\Users\Zuguang Chen\OneDrive\Study\UTS\C# Application Development\assignment 1\assignment1_ver3\assignment1_ver3\obj\Debug\assignment1_ver3.exe
+C:\Users\Zuguang Chen\OneDrive\Study\UTS\C# Application Development\assignment 1\assignment1_ver3\assignment1_ver3\obj\Debug\assignment1_ver3.pdb
