@@ -95,7 +95,7 @@ namespace assignment1_ver3
                     //The regular expression pattern to find the coefficinet
                     //string regexA = "([+-][0-9]*)x\\^2";
                     string regexB = "([+-][0-9]*)[*]*x(?!\\^)";
-                    string regexC = "([+-][0-9]+)(?!x)(?![*])(?![/])(?![0-9]*[*x])";
+                    string regexC = "([+-][0-9]+)(?!x)(?![*])(?![/])(?![0-9]*[*x])(?![0-9]+[*/])";
                     string regexCM = "([+-]*[0-9]+)([*]+)([+-]*[0-9]+)";
                     string regexCD = "([+-]*[0-9]+)([/]+)([+-]*[0-9]+)";
 
@@ -132,8 +132,15 @@ namespace assignment1_ver3
 
                         //Print out the coefficient
                         //Console.WriteLine("Coefficient a = {0}", a);
-                        //Console.WriteLine("Coefficient b = {0}", b);
-                        //Console.WriteLine("Coefficient c = {0}", c);
+                        Console.WriteLine("Coefficient b = {0}", b);
+                        Console.WriteLine("Coefficient c = {0}", c);
+
+                        Console.WriteLine("Coefficient cl = {0}", cLeft);
+                        Console.WriteLine("Coefficient cr = {0}", cRight);
+                        Console.WriteLine("Coefficient clm = {0}", cLeftM);
+                        Console.WriteLine("Coefficient cld = {0}", cLeftD);
+                        Console.WriteLine("Coefficient crm = {0}", cRightM);
+                        Console.WriteLine("Coefficient crd = {0}", cRightD);
 
                         //Print out the result
                         Console.WriteLine("Result x = {0}", x);
