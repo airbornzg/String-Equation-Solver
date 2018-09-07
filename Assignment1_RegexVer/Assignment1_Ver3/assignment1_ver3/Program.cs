@@ -6,13 +6,13 @@ namespace assignment1_ver3
 {
     class Solver
     {
+        //Addition and Minus calculation handler
         public double FindAddMinusCoeff(string str, string regex)
         {
             if (str[0] != '+' && str[0] != '-')
             {
                 str = "+" + str;
             }
-            //char[] c = str.ToCharArray();
             string coeff = "+0";
             double coeSum = 0;
 
@@ -28,6 +28,7 @@ namespace assignment1_ver3
             return coeSum;
         }
 
+        //Multiplication calculation handler
         public double FindMultiCoeff(string str, string regex)
         {
             if (str[0] != '+' && str[0] != '-')
@@ -50,6 +51,7 @@ namespace assignment1_ver3
             return coeSum;
         }
 
+        //Division calculation handler
         public double FindDivisionCoeff(string str, string regex)
         {
             if (str[0] != '+' && str[0] != '-')
@@ -100,6 +102,7 @@ namespace assignment1_ver3
                 {
                     if (args.Length > 2)
                     {
+                        //Remove all the space and blank from the string
                         equ = string.Join("", args);
                         equ = equ.Replace("calc", "");
                     }
