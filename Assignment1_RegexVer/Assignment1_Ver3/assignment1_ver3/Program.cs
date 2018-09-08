@@ -42,17 +42,23 @@ namespace assignment1_ver3
             Match m = Regex.Match(str, regex);
             while (m.Success)
             {
-                if (m.Groups[1].Value == "+" && m.Groups[5].Value == "x" && m.Groups[4].Value != "")
+                if (m.Groups[1].Value == "+" && m.Groups[5].Value == "x")
                 {
-                    coeff3 = m.Groups[2].Value;
-                    coeff1 = m.Groups[4].Value;
+                    if (m.Groups[4].Value != "")
+                    {
+                        coeff3 = m.Groups[2].Value;
+                        coeff1 = m.Groups[4].Value;
+                    }
                 }
-                else if (m.Groups[1].Value == "-" && m.Groups[5].Value == "x" && m.Groups[4].Value != "")
+                else if (m.Groups[1].Value == "-" && m.Groups[5].Value == "x")
                 {
-                    coeff3 = "-" + m.Groups[2].Value;
-                    coeff1 = m.Groups[4].Value;
+                    if (m.Groups[4].Value != "")
+                    {
+                        coeff3 = "-" + m.Groups[2].Value;
+                        coeff1 = m.Groups[4].Value;
+                    }
                 }
-                else if(m.Groups[4].Value != "")
+                else
                 {
                     coeff1 = m.Groups[1].Value;
                     coeff3 = m.Groups[3].Value;
@@ -137,77 +143,85 @@ namespace assignment1_ver3
                     }
                     else
                     {
-                        Console.WriteLine("Input Equation is {0}", args[1]);
                         equ = args[1];
                     }
-                    Console.WriteLine("The equation is: {0}", equ);
-                    //Divide the equation into 2 respect to the equal sign
-                    string[] equDivided = equ.Split('=');
-                    strLeft = equDivided[0];
-                    strRight = equDivided[1];
-
-                    //The regular expression pattern to find the coefficinet
-                    string regexB = "([+-][0-9]*)[*]*x(?!\\^)(?![*/])";
-                    string regexBD = "([+-]+)([0-9]*)([x]+)([/]+)([+-]*[0-9]+)";
-                    string regexBMF = "([+-]+)([0-9]+)([*]+)([0-9]*)([x]+)";
-                    //string regexBMB = "([+-]+)([0-9]*)([x]+)([*]+)([0-9]+)";
-                    string regexC = "(?<![*/]+)([+-][0-9]+)(?!x)(?![*])(?![/])(?![0-9]*[*x])(?![*/]*[0-9]+[*/]*)";
-                    string regexCM = "([+-]*[0-9]+)([*]+)([+-]*[0-9]+)";
-                    string regexCD = "([+-]*[0-9]+)([/]+)([+-]*[0-9]+)";
-
-                    Solver solver = new Solver();
-
-                    //Left equation
-                    double bLeft = solver.FindAddMinusCoeff(strLeft, regexB);
-                    double cLeft = solver.FindAddMinusCoeff(strLeft, regexC);
-
-                    double bLeftMF = solver.FindMultiCoeff(strLeft, regexBMF);
-                    //double bLeftMB = solver.FindMultiCoeff(strLeft, regexBMB);
-                    double bLeftD = solver.FindDivisionCoeff(strLeft, regexBD);
-                    double cLeftM = solver.FindMultiCoeff(strLeft, regexCM);
-                    double cLeftD = solver.FindDivisionCoeff(strLeft, regexCD);
-
-                    //Right equation
-                    double bRight = solver.FindAddMinusCoeff(strRight, regexB);
-                    double cRight = solver.FindAddMinusCoeff(strRight, regexC);
-
-                    double bRightMF = solver.FindMultiCoeff(strRight, regexBMF);
-                    //double bRightMB = solver.FindMultiCoeff(strLeft, regexBMB);
-                    double bRightD = solver.FindDivisionCoeff(strRight, regexBD);
-                    double cRightM = solver.FindMultiCoeff(strRight, regexCM);
-                    double cRightD = solver.FindDivisionCoeff(strRight, regexCD);
-
-                    Console.WriteLine("Coefficient bl = {0}", bLeft);
-                    Console.WriteLine("Coefficient bld = {0}", bLeftD);
-                    Console.WriteLine("Coefficient brd = {0}", bRightD);
-                    Console.WriteLine("Coefficient cl = {0}", cLeft);
-                    Console.WriteLine("Coefficient cr = {0}", cRight);
-                    Console.WriteLine("Coefficient clm = {0}", cLeftM);
-                    Console.WriteLine("Coefficient cld = {0}", cLeftD);
-                    Console.WriteLine("Coefficient crm = {0}", cRightM);
-                    Console.WriteLine("Coefficient crd = {0}", cRightD);
-
-                    //Add all the coeffcient parts together and get final coefficient
-                    b = (bLeft + bLeftMF + bLeftD) - (bRight + bRightMF+ bRightD);
-                    c = (cLeft + cLeftM + cLeftD) - (cRight + cRightM + cRightD);
-
-                    //DivideByZeroException
-                    if (b == 0)
+                    if (Regex.IsMatch(equ, "x") && Regex.IsMatch(equ, "="))
                     {
-                        throw new DivideByZeroException();
+                        Console.WriteLine("The equation is: {0}", equ);
+                        //Divide the equation into 2 respect to the equal sign
+                        string[] equDivided = equ.Split('=');
+                        strLeft = equDivided[0];
+                        strRight = equDivided[1];
+
+                        //The regular expression pattern to find the coefficinet
+                        string regexB = "([+-][0-9]*)[*]*x(?!\\^)(?![*/])";
+                        string regexBD = "([+-]+)([0-9]*)([x]+)([/]+)([+-]*[0-9]+)";
+                        string regexBMF = "([+-]+)([0-9]+)([*]+)([0-9]*)([x]+)";
+                        //string regexBMB = "([+-]+)([0-9]*)([x]+)([*]+)([0-9]+)";
+                        string regexC = "(?<![*/]+)([+-][0-9]+)(?!x)(?![*])(?![/])(?![0-9]*[*x])(?![*/]*[0-9]+[*/]*)";
+                        string regexCM = "([+-]*[0-9]+)([*]+)([+-]*[0-9]+)(?![x]+)";
+                        string regexCD = "([+-]*[0-9]+)([/]+)([+-]*[0-9]+)(?![x]+)";
+
+                        Solver solver = new Solver();
+
+                        //Left equation
+                        double bLeft = solver.FindAddMinusCoeff(strLeft, regexB);
+                        double cLeft = solver.FindAddMinusCoeff(strLeft, regexC);
+
+                        double bLeftMF = solver.FindMultiCoeff(strLeft, regexBMF);
+                        //double bLeftMB = solver.FindMultiCoeff(strLeft, regexBMB);
+                        double bLeftD = solver.FindDivisionCoeff(strLeft, regexBD);
+                        double cLeftM = solver.FindMultiCoeff(strLeft, regexCM);
+                        double cLeftD = solver.FindDivisionCoeff(strLeft, regexCD);
+
+                        //Right equation
+                        double bRight = solver.FindAddMinusCoeff(strRight, regexB);
+                        double cRight = solver.FindAddMinusCoeff(strRight, regexC);
+
+                        double bRightMF = solver.FindMultiCoeff(strRight, regexBMF);
+                        //double bRightMB = solver.FindMultiCoeff(strLeft, regexBMB);
+                        double bRightD = solver.FindDivisionCoeff(strRight, regexBD);
+                        double cRightM = solver.FindMultiCoeff(strRight, regexCM);
+                        double cRightD = solver.FindDivisionCoeff(strRight, regexCD);
+
+                        Console.WriteLine("Coefficient bl = {0}", bLeft);
+                        Console.WriteLine("Coefficient blmf = {0}", bLeftMF);
+                        Console.WriteLine("Coefficient brmf = {0}", bRightMF);
+                        Console.WriteLine("Coefficient bld = {0}", bLeftD);
+                        Console.WriteLine("Coefficient brd = {0}", bRightD);
+                        Console.WriteLine("Coefficient cl = {0}", cLeft);
+                        Console.WriteLine("Coefficient cr = {0}", cRight);
+                        Console.WriteLine("Coefficient clm = {0}", cLeftM);
+                        Console.WriteLine("Coefficient cld = {0}", cLeftD);
+                        Console.WriteLine("Coefficient crm = {0}", cRightM);
+                        Console.WriteLine("Coefficient crd = {0}", cRightD);
+
+                        //Add all the coeffcient parts together and get final coefficient
+                        b = (bLeft + bLeftMF + bLeftD) - (bRight + bRightMF + bRightD);
+                        c = (cLeft + cLeftM + cLeftD) - (cRight + cRightM + cRightD);
+
+                        //DivideByZeroException
+                        if (b == 0)
+                        {
+                            throw new DivideByZeroException();
+                        }
+                        else
+                        {
+                            //bx+c=0 general root solver formula
+                            x = -(c / b);
+
+                            //Print out the coefficient
+                            Console.WriteLine("Coefficient b = {0}", b);
+                            Console.WriteLine("Coefficient c = {0}", c);
+
+                            //Print out the result
+                            Console.WriteLine("Result x = {0}", x);
+                            Console.ReadKey();
+                        }
                     }
                     else
                     {
-                        //bx+c=0 general root solver formula
-                        x = -(c / b);
-
-                        //Print out the coefficient
-                        Console.WriteLine("Coefficient b = {0}", b);
-                        Console.WriteLine("Coefficient c = {0}", c);
-
-                        //Print out the result
-                        Console.WriteLine("Result x = {0}", x);
-                        Console.ReadKey();
+                        throw new Exception("Function need \"X\" and \"=\" sign");
                     }
                 }
                 else
@@ -217,12 +231,12 @@ namespace assignment1_ver3
             }
             catch (DivideByZeroException e)
             {
-                Console.WriteLine("The Error is '{0}'", e);
+                Console.WriteLine("The Error is {0}", e);
                 Console.ReadKey();
             }
             catch (Exception e)
             {
-                Console.WriteLine("The Error is '{0}'", e);
+                Console.WriteLine("The Error is {0}", e);
                 Console.ReadKey();
             }
             finally
