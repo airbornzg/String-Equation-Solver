@@ -42,11 +42,24 @@ namespace assignment1_ver3
             Match m = Regex.Match(str, regex);
             while (m.Success)
             {
-                coeff1 = m.Groups[1].Value;
-                coeff3 = m.Groups[3].Value;
-                coeMul = Double.Parse(coeff1) * Double.Parse(coeff3);
-                coeSum = coeSum + coeMul;
-                m = m.NextMatch();
+                if (m.Groups[1].Value == "+" && m.Groups[5].Value == "x" && m.Groups[4].Value != "")
+                {
+                    coeff3 = m.Groups[2].Value;
+                    coeff1 = m.Groups[4].Value;
+                }
+                else if (m.Groups[1].Value == "-" && m.Groups[5].Value == "x" && m.Groups[4].Value != "")
+                {
+                    coeff3 = "-" + m.Groups[2].Value;
+                    coeff1 = m.Groups[4].Value;
+                }
+                else if(m.Groups[4].Value != "")
+                {
+                    coeff1 = m.Groups[1].Value;
+                    coeff3 = m.Groups[3].Value;
+                }
+                    coeMul = Double.Parse(coeff1) * Double.Parse(coeff3);
+                    coeSum = coeSum + coeMul;
+                    m = m.NextMatch();           
             }
             return coeSum;
         }
@@ -65,15 +78,31 @@ namespace assignment1_ver3
             Match m = Regex.Match(str, regex);
             while (m.Success)
             {
-                if (m.Groups[1].Value == "+x")
+                if (m.Groups[1].Value == "+" && m.Groups[3].Value == "x")
                 {
-                    coeff1 = "1";
-                    coeff3 = m.Groups[3].Value;
+                    if (m.Groups[2].Value == "")
+                    {
+                        coeff1 = "1";
+                        coeff3 = m.Groups[5].Value;
+                    }
+                    else
+                    {                   
+                        coeff1 = m.Groups[2].Value;
+                        coeff3 = m.Groups[5].Value;
+                    }
                 }
-                else if (m.Groups[1].Value == "-x")
+                else if (m.Groups[1].Value == "-" && m.Groups[3].Value == "x")
                 {
-                    coeff1 = "-1";
-                    coeff3 = m.Groups[3].Value;
+                    if (m.Groups[2].Value == "")
+                    {
+                        coeff1 = "-1";
+                        coeff3 = m.Groups[5].Value;
+                    }
+                    else
+                    { 
+                        coeff1 = "-" + m.Groups[2].Value;
+                        coeff3 = m.Groups[5].Value;
+                    }
                 }
                 else
                 {
@@ -119,7 +148,9 @@ namespace assignment1_ver3
 
                     //The regular expression pattern to find the coefficinet
                     string regexB = "([+-][0-9]*)[*]*x(?!\\^)(?![*/])";
-                    string regexBD = "([+-]+[x]+)([/]+)([+-]*[0-9]+)";
+                    string regexBD = "([+-]+)([0-9]*)([x]+)([/]+)([+-]*[0-9]+)";
+                    string regexBMF = "([+-]+)([0-9]+)([*]+)([0-9]*)([x]+)";
+                    //string regexBMB = "([+-]+)([0-9]*)([x]+)([*]+)([0-9]+)";
                     string regexC = "(?<![*/]+)([+-][0-9]+)(?!x)(?![*])(?![/])(?![0-9]*[*x])(?![*/]*[0-9]+[*/]*)";
                     string regexCM = "([+-]*[0-9]+)([*]+)([+-]*[0-9]+)";
                     string regexCD = "([+-]*[0-9]+)([/]+)([+-]*[0-9]+)";
@@ -130,6 +161,8 @@ namespace assignment1_ver3
                     double bLeft = solver.FindAddMinusCoeff(strLeft, regexB);
                     double cLeft = solver.FindAddMinusCoeff(strLeft, regexC);
 
+                    double bLeftMF = solver.FindMultiCoeff(strLeft, regexBMF);
+                    //double bLeftMB = solver.FindMultiCoeff(strLeft, regexBMB);
                     double bLeftD = solver.FindDivisionCoeff(strLeft, regexBD);
                     double cLeftM = solver.FindMultiCoeff(strLeft, regexCM);
                     double cLeftD = solver.FindDivisionCoeff(strLeft, regexCD);
@@ -138,6 +171,8 @@ namespace assignment1_ver3
                     double bRight = solver.FindAddMinusCoeff(strRight, regexB);
                     double cRight = solver.FindAddMinusCoeff(strRight, regexC);
 
+                    double bRightMF = solver.FindMultiCoeff(strRight, regexBMF);
+                    //double bRightMB = solver.FindMultiCoeff(strLeft, regexBMB);
                     double bRightD = solver.FindDivisionCoeff(strRight, regexBD);
                     double cRightM = solver.FindMultiCoeff(strRight, regexCM);
                     double cRightD = solver.FindDivisionCoeff(strRight, regexCD);
@@ -153,7 +188,7 @@ namespace assignment1_ver3
                     Console.WriteLine("Coefficient crd = {0}", cRightD);
 
                     //Add all the coeffcient parts together and get final coefficient
-                    b = (bLeft + bLeftD) - (bRight + bRightD);
+                    b = (bLeft + bLeftMF + bLeftD) - (bRight + bRightMF+ bRightD);
                     c = (cLeft + cLeftM + cLeftD) - (cRight + cRightM + cRightD);
 
                     //DivideByZeroException
