@@ -42,30 +42,12 @@ namespace assignment1_ver3
             Match m = Regex.Match(str, regex);
             while (m.Success)
             {
-                if (m.Groups[1].Value == "+" && m.Groups[5].Value == "x")
-                {
-                    if (m.Groups[4].Value != "")
-                    {
-                        coeff3 = m.Groups[2].Value;
-                        coeff1 = m.Groups[4].Value;
-                    }
-                }
-                else if (m.Groups[1].Value == "-" && m.Groups[5].Value == "x")
-                {
-                    if (m.Groups[4].Value != "")
-                    {
-                        coeff3 = "-" + m.Groups[2].Value;
-                        coeff1 = m.Groups[4].Value;
-                    }
-                }
-                else
-                {
-                    coeff1 = m.Groups[1].Value;
-                    coeff3 = m.Groups[3].Value;
-                }
-                    coeMul = Double.Parse(coeff1) * Double.Parse(coeff3);
-                    coeSum = coeSum + coeMul;
-                    m = m.NextMatch();           
+                coeff1 = m.Groups[1].Value;
+                coeff3 = m.Groups[3].Value;
+
+                coeMul = Double.Parse(coeff1) * Double.Parse(coeff3);
+                coeSum = coeSum + coeMul;
+                m = m.NextMatch();
             }
             return coeSum;
         }
@@ -145,7 +127,8 @@ namespace assignment1_ver3
                     {
                         equ = args[1];
                     }
-                    if (Regex.IsMatch(equ, "x") && Regex.IsMatch(equ, "="))
+                    //Check if contains x and = sign
+                    if (Regex.IsMatch(equ, "x") && Regex.IsMatch(equ, "=") && Regex.IsMatch(equ, "/0") == false)
                     {
                         Console.WriteLine("The equation is: {0}", equ);
                         //Divide the equation into 2 respect to the equal sign
@@ -156,10 +139,10 @@ namespace assignment1_ver3
                         //The regular expression pattern to find the coefficinet
                         string regexB = "([+-][0-9]*)[*]*x(?!\\^)(?![*/])";
                         string regexBD = "([+-]+)([0-9]*)([x]+)([/]+)([+-]*[0-9]+)";
-                        string regexBMF = "([+-]+)([0-9]+)([*]+)([0-9]*)([x]+)";
+                        //string regexBMF = "([+-]+)([0-9]+)([(*]+)([0-9]*)([x]+)";
                         //string regexBMB = "([+-]+)([0-9]*)([x]+)([*]+)([0-9]+)";
-                        string regexC = "(?<![*/]+)([+-][0-9]+)(?!x)(?![*])(?![/])(?![0-9]*[*x])(?![*/]*[0-9]+[*/]*)";
-                        string regexCM = "([+-]*[0-9]+)([*]+)([+-]*[0-9]+)(?![x]+)";
+                        string regexC = "(?<![*/]+)([+-][0-9]+)(?!x)(?![(])(?![*])(?![/])(?![0-9]*[*x])(?![*/]*[0-9]+[*/]*)";
+                        string regexCM = "([+-]*[0-9]+)([(*]+)([+-]*[0-9]+)(?![x]+)";
                         string regexCD = "([+-]*[0-9]+)([/]+)([+-]*[0-9]+)(?![x]+)";
 
                         Solver solver = new Solver();
@@ -168,7 +151,7 @@ namespace assignment1_ver3
                         double bLeft = solver.FindAddMinusCoeff(strLeft, regexB);
                         double cLeft = solver.FindAddMinusCoeff(strLeft, regexC);
 
-                        double bLeftMF = solver.FindMultiCoeff(strLeft, regexBMF);
+                        //double bLeftMF = solver.FindMultiCoeff(strLeft, regexBMF);
                         //double bLeftMB = solver.FindMultiCoeff(strLeft, regexBMB);
                         double bLeftD = solver.FindDivisionCoeff(strLeft, regexBD);
                         double cLeftM = solver.FindMultiCoeff(strLeft, regexCM);
@@ -178,15 +161,15 @@ namespace assignment1_ver3
                         double bRight = solver.FindAddMinusCoeff(strRight, regexB);
                         double cRight = solver.FindAddMinusCoeff(strRight, regexC);
 
-                        double bRightMF = solver.FindMultiCoeff(strRight, regexBMF);
+                        //double bRightMF = solver.FindMultiCoeff(strRight, regexBMF);
                         //double bRightMB = solver.FindMultiCoeff(strLeft, regexBMB);
                         double bRightD = solver.FindDivisionCoeff(strRight, regexBD);
                         double cRightM = solver.FindMultiCoeff(strRight, regexCM);
                         double cRightD = solver.FindDivisionCoeff(strRight, regexCD);
 
                         Console.WriteLine("Coefficient bl = {0}", bLeft);
-                        Console.WriteLine("Coefficient blmf = {0}", bLeftMF);
-                        Console.WriteLine("Coefficient brmf = {0}", bRightMF);
+                        //Console.WriteLine("Coefficient blmf = {0}", bLeftMF);
+                        //Console.WriteLine("Coefficient brmf = {0}", bRightMF);
                         Console.WriteLine("Coefficient bld = {0}", bLeftD);
                         Console.WriteLine("Coefficient brd = {0}", bRightD);
                         Console.WriteLine("Coefficient cl = {0}", cLeft);
@@ -197,7 +180,7 @@ namespace assignment1_ver3
                         Console.WriteLine("Coefficient crd = {0}", cRightD);
 
                         //Add all the coeffcient parts together and get final coefficient
-                        b = (bLeft + bLeftMF + bLeftD) - (bRight + bRightMF + bRightD);
+                        b = (bLeft + bLeftD) - (bRight + bRightD);
                         c = (cLeft + cLeftM + cLeftD) - (cRight + cRightM + cRightD);
 
                         //DivideByZeroException
@@ -219,9 +202,13 @@ namespace assignment1_ver3
                             Console.ReadKey();
                         }
                     }
-                    else
+                    else if (Regex.IsMatch(equ, "/0") == false)
                     {
                         throw new Exception("Function need \"X\" and \"=\" sign");
+                    }
+                    else if (Regex.IsMatch(equ, "/0"))
+                    {
+                        throw new DivideByZeroException();
                     }
                 }
                 else
