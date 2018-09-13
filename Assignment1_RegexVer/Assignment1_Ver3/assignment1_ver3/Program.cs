@@ -18,11 +18,11 @@ namespace assignment1_ver3
         public Solver(string strLeft, string strRight)
         {
             //The regular expression pattern to find the coefficinet
-            string regexB = "([+-][0-9]*)[*]*x(?!\\^)(?![*/])";
-            string regexBD = "([+-]+)([0-9]*)([x]+)([/]+)([+-]*[0-9]+)";
-            string regexC = "(?<![*/]+)([+-][0-9]+)(?!x)(?![(])(?![*])(?![/])(?![0-9]*[*x])(?![*/]*[0-9]+[*/]*)";
-            string regexCM = "([+-]*[0-9]+)([(*]+)([+-]*[0-9]+)(?![x]+)";
-            string regexCD = "([+-]*[0-9]+)([/]+)([+-]*[0-9]+)(?![x]+)";
+            string regexB = "([+-][0-9]*)[*]*[xX](?!\\^)(?![*/])";
+            string regexBD = "([+-]+)([0-9]*)([xX]+)([/]+)([+-]*[0-9]+)";
+            string regexC = "(?<![*/]+)([+-][0-9]+)(?![xX])(?![(])(?![*])(?![/])(?![0-9]*[*xX])(?![*/]*[0-9]+[*/]*)";
+            string regexCM = "([+-]*[0-9]+)([(*]+)([+-]*[0-9]+)(?![xX]+)";
+            string regexCD = "([+-]*[0-9]+)([/]+)([+-]*[0-9]+)(?![xX]+)";
 
             //Left equation
             double bLeft = FindAddMinusCoeff(strLeft, regexB);
@@ -118,7 +118,7 @@ namespace assignment1_ver3
             Match m = Regex.Match(str, regex);
             while (m.Success)
             {
-                if (m.Groups[1].Value == "+" && m.Groups[3].Value == "x")
+                if (m.Groups[1].Value == "+" && (m.Groups[3].Value == "x" || m.Groups[3].Value == "X") )
                 {
                     if (m.Groups[2].Value == "")
                     {
@@ -131,7 +131,7 @@ namespace assignment1_ver3
                         coeff3 = m.Groups[5].Value;
                     }
                 }
-                else if (m.Groups[1].Value == "-" && m.Groups[3].Value == "x")
+                else if (m.Groups[1].Value == "-" && (m.Groups[3].Value == "x" || m.Groups[3].Value == "X") )
                 {
                     if (m.Groups[2].Value == "")
                     {
@@ -168,45 +168,37 @@ namespace assignment1_ver3
             //Exception Handling
             try
             {
-                if (args[0] == "calc")
+                if (args.Length > 1)
                 {
-                    if (args.Length > 2)
-                    {
-                        //Remove all the space and blank from the string
-                        equ = string.Join("", args);
-                        equ = equ.Replace("calc", "");
-                    }
-                    else
-                    {
-                        equ = args[1];
-                    }
-
-                    //Check if contains x and = sign
-                    if (Regex.IsMatch(equ, "x") && Regex.IsMatch(equ, "=") && Regex.IsMatch(equ, "/0") == false)
-                    {
-                        //Print out the input equation
-                        Console.WriteLine("The equation is: {0}", equ);
-
-                        //Divide the equation into 2 respect to the equal sign
-                        string[] equDivided = equ.Split('=');
-                        strLeft = equDivided[0];
-                        strRight = equDivided[1];
-
-                        //Solve this equation
-                        Solver solver = new Solver(strLeft, strRight);
-                    }
-                    else if (Regex.IsMatch(equ, "/0") == false)
-                    {
-                        throw new Exception("Function need \"X\" and \"=\" sign");
-                    }
-                    else if (Regex.IsMatch(equ, "/0"))
-                    {
-                        throw new DivideByZeroException();
-                    }
+                    //Remove all the space and blank from the string
+                    equ = string.Join("", args);
                 }
                 else
                 {
-                    throw new Exception("Please input correct equation format!");
+                    equ = args[0];
+                }
+
+                //Check if contains x and = sign
+                if ( (Regex.IsMatch(equ, "x") || Regex.IsMatch(equ, "X") )&& Regex.IsMatch(equ, "=") && Regex.IsMatch(equ, "/0") == false)
+                {
+                    //Print out the input equation
+                    Console.WriteLine("The equation is: {0}", equ);
+
+                    //Divide the equation into 2 respect to the equal sign
+                    string[] equDivided = equ.Split('=');
+                    strLeft = equDivided[0];
+                    strRight = equDivided[1];
+
+                    //Solve this equation
+                    Solver solver = new Solver(strLeft, strRight);
+                }
+                else if (Regex.IsMatch(equ, "/0") == false)
+                {
+                    throw new Exception("Function need \"X\" and \"=\" sign");
+                }
+                else if (Regex.IsMatch(equ, "/0"))
+                {
+                    throw new DivideByZeroException();
                 }
             }
             catch (DivideByZeroException e)
