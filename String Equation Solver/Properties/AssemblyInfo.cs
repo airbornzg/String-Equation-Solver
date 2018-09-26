@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("assignment1_ver3")]
+[assembly: AssemblyTitle("String Equation Solver")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("assignment1_ver3")]
+[assembly: AssemblyProduct("String Equation Solver")]
 [assembly: AssemblyCopyright("Copyright ©  2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("6962e16e-5437-4f43-b33d-47c043c3c283")]
+[assembly: Guid("8c31ec8b-1d0b-4b58-ba7b-56d77ba562b4")]
 
 // Version information for an assembly consists of the following four values:
 //

@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6962E16E-5437-4F43-B33D-47C043C3C283}</ProjectGuid>
+    <ProjectGuid>{8C31EC8B-1D0B-4B58-BA7B-56D77BA562B4}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>assignment1_ver3</RootNamespace>
-    <AssemblyName>assignment1_ver3</AssemblyName>
+    <RootNamespace>String_Equation_Solver</RootNamespace>
+    <AssemblyName>String Equation Solver</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

@@ -9,7 +9,7 @@ using System.Text.RegularExpressions;
  |     Due Date:  17th Sep, 2018
  * 
 */
-namespace assignment1_ver3
+namespace StringEquationSolver
 {
     class Solver
     {
@@ -51,16 +51,17 @@ namespace assignment1_ver3
             {
                 //bx+c=0 general root solver formula
                 x = -(c / b);
-          
+
                 //Print out the result
                 Console.WriteLine("X = {0}", x);
                 Console.ReadKey();
-            }      
+            }
         }
 
         //Addition and Minus calculation handler
         public double FindAddMinusCoeff(string str, string regex)
         {
+            //Check first sign of string
             if (str[0] != '+' && str[0] != '-')
             {
                 str = "+" + str;
@@ -68,13 +69,18 @@ namespace assignment1_ver3
             string coeff = "+0";
             double coeSum = 0;
 
+            //Find the matched pattern
             Match m = Regex.Match(str, regex);
             while (m.Success)
             {
                 coeff = m.Groups[1].Value;
                 if (coeff == "-") { coeff = "-1"; }
                 if (coeff == "+") { coeff = "1"; }
+
+                //Sums up the coefficient
                 coeSum = coeSum + Double.Parse(coeff);
+
+                //Go to next matched pattern
                 m = m.NextMatch();
             }
             return coeSum;
@@ -83,6 +89,7 @@ namespace assignment1_ver3
         //Multiplication calculation handler
         public double FindMultiCoeff(string str, string regex)
         {
+            //Check first sign of string
             if (str[0] != '+' && str[0] != '-')
             {
                 str = "+" + str;
@@ -91,14 +98,21 @@ namespace assignment1_ver3
             string coeff3 = "+0";
             double coeMul = 0;
             double coeSum = 0;
+
+            //Find the matched pattern
             Match m = Regex.Match(str, regex);
             while (m.Success)
             {
                 coeff1 = m.Groups[1].Value;
                 coeff3 = m.Groups[3].Value;
 
+                //Do multiplication process
                 coeMul = Double.Parse(coeff1) * Double.Parse(coeff3);
+
+                //Sums up the coefficient
                 coeSum = coeSum + coeMul;
+
+                //Go to next matched pattern
                 m = m.NextMatch();
             }
             return coeSum;
@@ -107,18 +121,21 @@ namespace assignment1_ver3
         //Division calculation handler
         public double FindDivisionCoeff(string str, string regex)
         {
+            //Check first sign of string
             if (str[0] != '+' && str[0] != '-')
             {
                 str = "+" + str;
-            }            
+            }
             string coeff1 = "+0";
             string coeff3 = "+0";
             double coeMul = 0;
             double coeSum = 0;
+
+            //Find the matched pattern
             Match m = Regex.Match(str, regex);
             while (m.Success)
             {
-                if (m.Groups[1].Value == "+" && (m.Groups[3].Value == "x" || m.Groups[3].Value == "X") )
+                if (m.Groups[1].Value == "+" && (m.Groups[3].Value == "x" || m.Groups[3].Value == "X"))
                 {
                     if (m.Groups[2].Value == "")
                     {
@@ -126,12 +143,12 @@ namespace assignment1_ver3
                         coeff3 = m.Groups[5].Value;
                     }
                     else
-                    {                   
+                    {
                         coeff1 = m.Groups[2].Value;
                         coeff3 = m.Groups[5].Value;
                     }
                 }
-                else if (m.Groups[1].Value == "-" && (m.Groups[3].Value == "x" || m.Groups[3].Value == "X") )
+                else if (m.Groups[1].Value == "-" && (m.Groups[3].Value == "x" || m.Groups[3].Value == "X"))
                 {
                     if (m.Groups[2].Value == "")
                     {
@@ -139,7 +156,7 @@ namespace assignment1_ver3
                         coeff3 = m.Groups[5].Value;
                     }
                     else
-                    { 
+                    {
                         coeff1 = "-" + m.Groups[2].Value;
                         coeff3 = m.Groups[5].Value;
                     }
@@ -149,8 +166,14 @@ namespace assignment1_ver3
                     coeff1 = m.Groups[1].Value;
                     coeff3 = m.Groups[3].Value;
                 }
+
+                //Do division process
                 coeMul = Double.Parse(coeff1) / Double.Parse(coeff3);
+
+                //Sums up the coefficient
                 coeSum = coeSum + coeMul;
+
+                //Go to next matched pattern
                 m = m.NextMatch();
             }
             return coeSum;
@@ -179,7 +202,7 @@ namespace assignment1_ver3
                 }
 
                 //Check if contains x and = sign
-                if ( (Regex.IsMatch(equ, "x") || Regex.IsMatch(equ, "X") )&& Regex.IsMatch(equ, "=") && Regex.IsMatch(equ, "/0") == false)
+                if ((Regex.IsMatch(equ, "x") || Regex.IsMatch(equ, "X")) && Regex.IsMatch(equ, "=") && Regex.IsMatch(equ, "/0") == false)
                 {
                     //Print out the input equation
                     Console.WriteLine("The equation is: {0}", equ);
